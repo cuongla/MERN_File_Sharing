@@ -2,11 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./",
-    "rootDir": "./server.ts",
-    "noUnusedLocals": true,
+    "outDir": "dist",
+    // "rootDir": "./server.ts",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "sourceMap": true
   }
 }
