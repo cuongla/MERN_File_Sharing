@@ -3,6 +3,7 @@ import axios from 'axios';
 import ImageUpload from '@components/ImageUpload';
 import RenderFile from '@components/RenderFile';
 import DownloadFile from '@components/DownloadFile';
+import Button from '@components/Reusable/Button';
 
 const Home = () => {
   const [file, setFile] = useState(null);
@@ -54,22 +55,18 @@ const Home = () => {
         }
         {
           !downloadPageLink && file && (
-            <button
-              onClick={handleUpload}
-              className="bg-gray-900 p-2 my-5 rounded-md w-44 focus:ouline-none">
-              {uploadState}
-            </button>
+            <Button
+              text={uploadState}
+              onClick={handleUpload} />
           )
         }
         {
           downloadPageLink && (
             <div className="p-2 text-center">
               <DownloadFile downloadPageLink={downloadPageLink} />
-              <button
+              <Button
                 onClick={handleReset}
-                className="bg-gray-900 p-2 my-5 rounded-md w-44 focus:ouline-none">
-                Upload New File
-              </button>
+                text="Upload New File" />
             </div>
           )
         }
