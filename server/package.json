@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
+  "engines": {
+    "node": "14.15.1",
+    "npm": "7.20.3"
+  },
   "scripts": {
-    "server": "ts-node-dev --clear server.ts"
+    "server": "ts-node-dev --clear server.ts",
+    "build": "tsc",
+    "start": "node dist/server.ts"
   },
   "keywords": [],
   "author": "",

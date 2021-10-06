@@ -26,7 +26,7 @@ router.post('/upload', upload.single("myFile"), async (req, res) => {
                 folder: "ShareFile",
                 resource_type: "auto"
             });
-        } catch (error: any) {
+        } catch (error) {
             res.status(400).json({ message: "Cloudinary Error :(" });
         }
 
@@ -46,7 +46,7 @@ router.post('/upload', upload.single("myFile"), async (req, res) => {
             id: file._id,
             downloadPageLink: `${process.env.CLIENT_END_POINT}/download/${file._id}`
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: "Server Error :(" });
     }
@@ -70,7 +70,7 @@ router.get('/:id', async (req, res) => {
             format,
             id
         })
-    } catch (error: any) {
+    } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: "Server Error :(" });
     }
@@ -88,7 +88,7 @@ router.get('/:id/download', async (req, res) => {
         }
 
         https.get(file.secure_url, (fileStream) => fileStream.pipe(res));
-    } catch (error: any) {
+    } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: "Server Error :(" });
     }

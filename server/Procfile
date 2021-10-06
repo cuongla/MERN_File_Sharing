@@ -1,1 +1,1 @@
-woker:node ./server/server.ts
+woker:node dist/server.js
