@@ -1,8 +1,10 @@
 import express from 'express';
 import multer from 'multer';
 import https from 'https';
+import nodemailer from 'nodemailer';
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import File from '../models/file.model';
+import { emailTemplate } from '../utils/emailTemplates';
 const router = express.Router();
 
 // multer
@@ -87,6 +89,63 @@ router.get('/:id/download', async (req, res) => {
 
         https.get(file.secure_url, (fileStream) => fileStream.pipe(res));
     } catch (error: any) {
+        console.log(error.message);
+        res.status(500).json({ message: "Server Error :(" });
+    }
+});
+
+router.post('/email', async (req, res) => {
+    try {
+        const { id, emailFrom, emailTo } = req.body;
+        const file = await File.findById(id);
+
+        if (!file) return res.status(404).json({ message: 'File does not exist' });
+
+        // transporter
+        let transporter = nodemailer.createTransport({
+            // @ts-ignore
+            host: process.env.SENDINBLUE_SMTP_HOST,
+            port: process.env.SENDINBLUE_SMTP_PORT,
+            secure: false,
+            auth: {
+                user: process.env.SENDINBLUE_SMTP_USER,
+                pass: process.env.SENDINBLUE_SMTP_PASSWORD
+            }
+        });
+        console.log(transporter)
+
+        const { filename, sizeInBytes } = file;
+        const filesize = `${(Number(sizeInBytes) / (1024 * 1024)).toFixed(2)} MB`;
+        const downloadPageLink = `${process.env.CLIENT_END_POINT}/download/${id}`;
+
+        // email options
+        const emailOptions = {
+            from: emailFrom,
+            to: emailTo,
+            subket: "File is shared with you",
+            text: `${emailFrom} shared a file with you`,
+            html: emailTemplate(emailFrom, downloadPageLink, filename, filesize)
+        }
+
+        // send email
+        transporter.sendMail(emailOptions, async (err, info) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: "Server Error :("
+                })
+            };
+
+            file.sender = emailFrom;
+            file.receiver = emailTo;
+
+            await file.save();
+            return res.status(200).json({
+                message: "Email Sent"
+            })
+        })
+
+    } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: "Server Error :(" });
     }

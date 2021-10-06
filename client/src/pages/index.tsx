@@ -3,6 +3,7 @@ import axios from 'axios';
 import ImageUpload from '@components/ImageUpload';
 import RenderFile from '@components/RenderFile';
 import DownloadFile from '@components/DownloadFile';
+import EmailFrom from '@components/EmailForm';
 import Button from '@components/Reusable/Button';
 
 const Home = () => {
@@ -64,6 +65,7 @@ const Home = () => {
           downloadPageLink && (
             <div className="p-2 text-center">
               <DownloadFile downloadPageLink={downloadPageLink} />
+              <EmailFrom id={id} />
               <Button
                 onClick={handleReset}
                 text="Upload New File" />
