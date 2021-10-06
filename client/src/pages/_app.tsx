@@ -1,5 +1,8 @@
+import axios from "axios";
 import "tailwindcss/tailwind.css";
 import "../../styles/globals.css";
+
+axios.defaults.baseURL = "http://localhost:8000/";
 
 function MyApp({ Component, pageProps }) {
   return (

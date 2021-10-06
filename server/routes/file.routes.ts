@@ -12,17 +12,17 @@ router.post('/upload', upload.single("myFile"), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({
-                message: "File is missing!"
+                message: "File is missing"
             });
         }
 
         let uploadedFile: UploadApiResponse;
 
         try {
-            uploadedFile = await cloudinary.uploader.upload(req.file.path), {
+            uploadedFile = await cloudinary.uploader.upload(req.file.path, {
                 folder: "ShareFile",
                 resource_type: "auto"
-            };
+            });
         } catch (error: any) {
             res.status(400).json({ message: "Cloudinary Error :(" });
         }
@@ -30,6 +30,7 @@ router.post('/upload', upload.single("myFile"), async (req, res) => {
         // upload file
         const { originalname } = req.file;
         const { secure_url, bytes, format } = uploadedFile;
+        console.log(uploadedFile);
 
         const file = await File.create({
             filename: originalname,
