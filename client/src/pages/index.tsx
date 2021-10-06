@@ -13,6 +13,7 @@ const Home = () => {
   const [uploadState, setUploadState] = useState<"Uploading" | "Upload Failed" | "Uploaded" | "Upload">("Upload");
 
   const handleUpload = async () => {
+    console.log(process.env.REACT_APP_SERVER_API)
     if (uploadState === "Uploading") return;
 
     // upload file
