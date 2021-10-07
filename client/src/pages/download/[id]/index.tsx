@@ -8,7 +8,7 @@ import fileDownload from 'js-file-download';
 
 const DownloadPage: NextPage<{ file: IFile }> = ({ file: { format, name, sizeInBytes, id } }) => {
     const handleDownload = async () => {
-        const { data } = await axios.get(`${process.env.REACT_APP_SERVER_API}api/files/${id}/download`, {
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_API}api/files/${id}/download`, {
             responseType: "blob"
         });
         fileDownload(data, name);
@@ -38,7 +38,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     let file;
 
     try {
-        const { data } = await axios.get(`${process.env.REACT_APP_SERVER_API}api/files/${id}`);
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_API}api/files/${id}`);
         console.log(data);
         file = data;
     } catch (error) {
